@@ -15,8 +15,8 @@ jobs:
           native,
           x86_64-linux-gnu,
           x86_64-linux-musl,
-          x86_64-windows,
-          aarch64-macos,
+          x86_64-windows-gnu,
+          # aarch64-macos, not supported at the momoent
           aarch64-linux-gnu,
           aarch64-linux-musl
           # TODO: bsd
@@ -36,7 +36,7 @@ jobs:
       - name: Setup Zig
         uses: mlugg/setup-zig@v2
         with:
-          version: 0.15.2
+          version: 0.16.0
 
       - name: Build
         run: zig build -Dtarget=${{ matrix.target }} -Doptimize=${{ matrix.optimize }}

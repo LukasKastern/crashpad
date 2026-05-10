@@ -2,7 +2,7 @@
     .name = .crashpad,
     .version = "0.1.0",
     .fingerprint = 0xa131b7c84dfd50b5,
-    .minimum_zig_version = "0.14.0",
+    .minimum_zig_version = "0.16.0",
     .dependencies = .{
         .crashpad = .{
             .url = "git+https://github.com/getsentry/crashpad.git#e24b0f9e760e27464fe2ed30fdd7be45a27a67ad",
