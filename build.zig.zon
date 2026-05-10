@@ -21,8 +21,8 @@
             .hash = "N-V-__8AAD0ePgAt4BP-nEduYT78x8_nTSaNgzP8ShVPB7oY",
         },
         .curl = .{
-            .url = "git+https://github.com/lukaskastern/curl.git?ref=boringssl#95666d3e6a1780a7e4d043de531fa691704c61f8",
-            .hash = "curl-8.18.0-mFDAWBX5AAD4TuMBHFpSPfD6GDGtIrL8mZQ1MpYwIQtu",
+            .url = "git+https://github.com/lukaskastern/curl.git?ref=boringssl#79c7db96e951a5ddbb0180c1412b1d5a2022e1ad",
+            .hash = "curl-8.18.0-mFDAWCH5AADu_sgXOXIw6_ZDSmqLsybYPS3BkU6gDRZY",
         },
         .patch = .{
             .url = "git+https://github.com/lukaskastern/patch.git#300478c43fe616a66679e8c71a8dd6009859b973",
