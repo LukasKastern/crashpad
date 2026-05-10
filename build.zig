@@ -56,7 +56,7 @@ pub fn build(b: *std.Build) !void {
         addSources(minichromium_root, b, target, minichromium, minichromimum_src);
 
         minichromium.root_module.addCSourceFile(.{
-            .file = upstream.path("third_party/mini_chromium/utf_string_conversion_utils.mingw.cc"),
+            .file = upstream_root.path(b, "third_party/mini_chromium/utf_string_conversion_utils.mingw.cc"),
             .language = .cpp,
             .flags = &.{},
         });
@@ -65,7 +65,7 @@ pub fn build(b: *std.Build) !void {
             .include_extensions = &.{".h"},
         });
         minichromium.installHeader(minichromium_root.path(b, "build/build_config.h"), "build/build_config.h");
-        minichromium.installHeader(upstream.path("third_party/mini_chromium/build/chromeos_buildflags.h"), "build/chromeos_buildflags.h");
+        minichromium.installHeader(upstream_root.path(b, "third_party/mini_chromium/build/chromeos_buildflags.h"), "build/chromeos_buildflags.h");
     }
 
     // Crashpad handler lib
@@ -104,6 +104,13 @@ pub fn build(b: *std.Build) !void {
         crashpad_minidump_lib.root_module.linkLibrary(minichromium);
     }
 
+    // Grab LSS
+    // zig does not clone the submodule in crashpad directly
+    const lss = b.dependency("lss", .{});
+    const syscall_support = lss.path("linux_syscall_support.h");
+    const write_lss = b.addWriteFiles();
+    _ = write_lss.addCopyFile(syscall_support, "third_party/lss/lss/linux_syscall_support.h");
+
     // Crashpad util lib
     const crashpad_util_lib = b.addLibrary(.{
         .name = "crashpad_util",
@@ -116,6 +123,8 @@ pub fn build(b: *std.Build) !void {
         .linkage = .static,
     });
     {
+        crashpad_util_lib.step.dependOn(&write_lss.step);
+
         crashpad_util_lib.root_module.linkLibrary(minichromium);
         crashpad_util_lib.root_module.linkLibrary(zlib_dep.artifact("z"));
 
@@ -126,7 +135,7 @@ pub fn build(b: *std.Build) !void {
         addSources(upstream_root, b, target, crashpad_util_lib, crashpad_util_src);
         crashpad_util_lib.root_module.linkLibrary(minichromium);
 
-        crashpad_util_lib.root_module.addIncludePath(upstream.path(""));
+        crashpad_util_lib.root_module.addIncludePath(write_lss.getDirectory());
 
         if (target.result.os.tag == .windows) {
             crashpad_handler_lib.root_module.linkSystemLibrary("version", .{});
@@ -139,7 +148,7 @@ pub fn build(b: *std.Build) !void {
                     "util/misc/capture_context_win.asm",
                     "util/win/safe_terminate_process.asm",
                 },
-                .root = upstream.path(""),
+                .root = upstream_root.path(b, ""),
             });
         }
 
@@ -151,7 +160,7 @@ pub fn build(b: *std.Build) !void {
             }
 
             crashpad_util_lib.root_module.addCSourceFile(.{
-                .file = upstream.path("util/net/http_transport_libcurl.cc"),
+                .file = upstream_root.path(b, "util/net/http_transport_libcurl.cc"),
                 .language = .cpp,
                 .flags = flags.items,
             });
@@ -187,15 +196,17 @@ pub fn build(b: *std.Build) !void {
     {
         crashpad_client.root_module.linkLibrary(minichromium);
 
-        crashpad_client.installHeadersDirectory(upstream.path("client"), "client", .{ .include_extensions = &.{".h"} });
-        crashpad_client.installHeadersDirectory(upstream.path("util"), "util", .{ .include_extensions = &.{".h"} });
+        crashpad_client.installHeadersDirectory(upstream_root.path(b, "client"), "client", .{ .include_extensions = &.{".h"} });
+        crashpad_client.installHeadersDirectory(upstream_root.path(b, "util"), "util", .{ .include_extensions = &.{".h"} });
         crashpad_client.installHeadersDirectory(minichromium_upstream.path("base"), "base", .{ .include_extensions = &.{".h"} });
         crashpad_client.installHeader(minichromium_upstream.path("build/build_config.h"), "build/build_config.h");
         crashpad_client.installHeader(minichromium_upstream.path("build/buildflag.h"), "build/buildflag.h");
-        crashpad_client.installHeader(upstream.path("third_party/mini_chromium/build/chromeos_buildflags.h"), "build/chromeos_buildflags.h");
+        crashpad_client.installHeader(upstream_root.path(b, "third_party/mini_chromium/build/chromeos_buildflags.h"), "build/chromeos_buildflags.h");
 
         crashpad_client.root_module.linkLibrary(crashpad_util_lib);
         crashpad_client.root_module.addIncludePath(b.path(""));
+
+        crashpad_client.root_module.addIncludePath(write_lss.getDirectory());
 
         addSources(upstream_root, b, target, crashpad_client, crashpad_client_src);
 
@@ -266,7 +277,7 @@ pub fn build(b: *std.Build) !void {
             crashpad_handler.root_module.linkSystemLibrary("pthread", .{});
         }
 
-        crashpad_handler.root_module.addIncludePath(upstream.path("."));
+        crashpad_handler.root_module.addIncludePath(upstream_root.path(b, "."));
 
         // Cringe
         crashpad_handler.mingw_unicode_entry_point = true;
@@ -301,7 +312,7 @@ pub fn build(b: *std.Build) !void {
             }),
             .linkage = .dynamic,
         });
-        addSources(upstream.path(""), b, target, crashpad_wer_module, crashpad_wer_module_src);
+        addSources(upstream_root, b, target, crashpad_wer_module, crashpad_wer_module_src);
         b.installArtifact(crashpad_wer_module);
 
         crashpad_wer_module.root_module.linkLibrary(minichromium);
