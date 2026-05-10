@@ -39,5 +39,6 @@
         "src",
         "README.md",
         "LICENSE",
+        "patches",
     },
 }
