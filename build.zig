@@ -1,5 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
+const patch = @import("patch");
 
 pub fn build(b: *std.Build) !void {
     // Import dependency.
@@ -25,7 +26,29 @@ pub fn build(b: *std.Build) !void {
         .linkage = .static,
     });
 
-    const upstream_root = upstream.path("");
+    const patch_step = patch.PatchStep.create(b, .{
+        .optimize = .ReleaseSafe,
+        .target = .{
+            .query = .{},
+            .result = builtin.target,
+        },
+        .root_directory = upstream.path(""),
+        .strip = 1,
+    });
+
+    const io = b.graph.io;
+
+    const build_root = b.build_root.handle;
+
+    // Add patches
+    const patch_dir = try build_root.openDir(io, "patches", .{ .iterate = true });
+    var iterator = patch_dir.iterate();
+    while (try iterator.next(io)) |p| {
+        const patch_path = try std.fmt.allocPrint(b.allocator, "patches/{s}", .{p.name});
+        patch_step.addPatch(b.path(patch_path));
+    }
+
+    const upstream_root = patch_step.getDirectory();
 
     // Minichromium base config
     {
@@ -103,7 +126,7 @@ pub fn build(b: *std.Build) !void {
         addSources(upstream_root, b, target, crashpad_util_lib, crashpad_util_src);
         crashpad_util_lib.root_module.linkLibrary(minichromium);
 
-        crashpad_util_lib.root_module.addIncludePath(b.path(""));
+        crashpad_util_lib.root_module.addIncludePath(upstream.path(""));
 
         if (target.result.os.tag == .windows) {
             crashpad_handler_lib.root_module.linkSystemLibrary("version", .{});
@@ -128,7 +151,7 @@ pub fn build(b: *std.Build) !void {
             }
 
             crashpad_util_lib.root_module.addCSourceFile(.{
-                .file = b.path("util/net/http_transport_libcurl.cc"),
+                .file = upstream.path("util/net/http_transport_libcurl.cc"),
                 .language = .cpp,
                 .flags = flags.items,
             });
@@ -255,11 +278,11 @@ pub fn build(b: *std.Build) !void {
                 try flags.append(b.allocator, "-DMUSL");
             }
 
-            crashpad_handler.root_module.addCSourceFile(.{
-                .file = b.path("client/pthread_create_linux.cc"),
-                .flags = flags.items,
-                .language = .cpp,
-            });
+            // crashpad_handler.root_module.addCSourceFile(.{
+            //     .file = b.path("client/pthread_create_linux.cc"),
+            //     .flags = flags.items,
+            //     .language = .cpp,
+            // });
         }
 
         addSources(upstream_root, b, target, crashpad_handler, crashpad_handler_src);
@@ -278,7 +301,7 @@ pub fn build(b: *std.Build) !void {
             }),
             .linkage = .dynamic,
         });
-        addSources(b.path(""), b, target, crashpad_wer_module, crashpad_wer_module_src);
+        addSources(upstream.path(""), b, target, crashpad_wer_module, crashpad_wer_module_src);
         b.installArtifact(crashpad_wer_module);
 
         crashpad_wer_module.root_module.linkLibrary(minichromium);
@@ -559,7 +582,9 @@ const crashpad_handler_src = CompileDefinition{
         "handler/main.cc",
     },
     .win = &.{},
-    .unix = &.{},
+    .unix = &.{
+        "client/pthread_create_linux.cc",
+    },
     .language = .cpp,
     .flags = &.{},
     .include_directories = &.{},
