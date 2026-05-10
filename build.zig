@@ -282,20 +282,6 @@ pub fn build(b: *std.Build) !void {
         // Cringe
         crashpad_handler.mingw_unicode_entry_point = true;
 
-        if (target.result.os.tag != .windows) {
-            var flags: std.ArrayList([]const u8) = .empty;
-            try flags.appendSlice(b.allocator, global_flags);
-            if (target.result.abi.isMusl()) {
-                try flags.append(b.allocator, "-DMUSL");
-            }
-
-            // crashpad_handler.root_module.addCSourceFile(.{
-            //     .file = b.path("client/pthread_create_linux.cc"),
-            //     .flags = flags.items,
-            //     .language = .cpp,
-            // });
-        }
-
         addSources(upstream_root, b, target, crashpad_handler, crashpad_handler_src);
 
         crashpad_handler.subsystem = .Windows;
@@ -432,6 +418,13 @@ pub fn addSources(root: std.Build.LazyPath, b: *std.Build, target: std.Build.Res
         });
     }
 
+    var flags: std.ArrayList([]const u8) = .empty;
+    flags.appendSlice(b.allocator, definition.flags ++ global_flags) catch @panic("OOM");
+
+    if (target.result.abi.isMusl()) {
+        flags.append(b.allocator, "-DMUSL") catch @panic("OOM");
+    }
+
     // Platform specific configs
     switch (target.result.os.tag) {
         .linux, .macos => {
@@ -439,7 +432,7 @@ pub fn addSources(root: std.Build.LazyPath, b: *std.Build, target: std.Build.Res
                 compile.root_module.addCSourceFile(.{
                     .file = root.path(b, file),
                     .language = definition.language,
-                    .flags = definition.flags ++ global_flags,
+                    .flags = flags.items,
                 });
             }
         },
@@ -448,7 +441,7 @@ pub fn addSources(root: std.Build.LazyPath, b: *std.Build, target: std.Build.Res
                 compile.root_module.addCSourceFile(.{
                     .file = root.path(b, file),
                     .language = definition.language,
-                    .flags = definition.flags ++ global_flags,
+                    .flags = flags.items,
                 });
             }
         },
