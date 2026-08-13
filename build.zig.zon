@@ -21,8 +21,8 @@
             .hash = "N-V-__8AAD0ePgAt4BP-nEduYT78x8_nTSaNgzP8ShVPB7oY",
         },
         .curl = .{
-            .url = "git+https://github.com/lukaskastern/curl.git?ref=boringssl#79c7db96e951a5ddbb0180c1412b1d5a2022e1ad",
-            .hash = "curl-8.18.0-mFDAWCH5AADu_sgXOXIw6_ZDSmqLsybYPS3BkU6gDRZY",
+            .url = "git+https://github.com/lukaskastern/curl.git?ref=boringssl#bc02ae47be32936da66cabfd8ed6cf1ba1d09f19",
+            .hash = "curl-8.18.0-mFDAWPf7AACO9V1eofR62eABcrB1QQtT1a-DN5XumC53",
         },
         .patch = .{
             .url = "git+https://github.com/lukaskastern/patch.git#300478c43fe616a66679e8c71a8dd6009859b973",
@@ -31,6 +31,10 @@
         .lss = .{
             .url = "https://chromium.googlesource.com/linux-syscall-support/+archive/9719c1e1e676814c456b55f5f070eabad6709d31.tar.gz",
             .hash = "N-V-__8AAHP7AwBvEXCL17CHmvtbZsfdGPuLxHkEqM9H0UEp",
+        },
+        .boringssl = .{
+            .url = "git+https://github.com/lukasKastern/boringssl.git#eb7370088c9a2e7f610a2436468dcf6904cd2282",
+            .hash = "boringssl-0.20260508.0-EhtkNTr_AgBIuFqi2C2o_aWHGyBwNTOWNqV6X8l7g4I-",
         },
     },
     .paths = .{

@@ -118,7 +118,6 @@ pub fn build(b: *std.Build) !void {
             .target = target,
             .optimize = optimize,
             .link_libc = true,
-            // .link_libcpp = true,
         }),
         .linkage = .static,
     });
@@ -325,8 +324,6 @@ fn addMasmFiles(compile: *std.Build.Step.Compile, options: AddMasmFilesOptions) 
         return error.MasmIsWindowsOnly;
     }
 
-    // builtin.target;
-
     const jwasm = b.dependency("jwasm", .{});
 
     for (options.files) |file| {
@@ -353,60 +350,6 @@ fn addMasmFiles(compile: *std.Build.Step.Compile, options: AddMasmFilesOptions) 
 
         compile.root_module.addObjectFile(obj);
     }
-
-    // const cmd = switch (builtin.os.tag) {
-    //     .windows => blk: {
-    //         // var env_var: []const u8 = undefined;
-    //         // const ml = ml_blk: switch (options.target.cpu.arch) {
-    //         //     .x86 => {
-    //         //         env_var = "ML_PATH";
-    //         //         break :ml_blk "ml.exe";
-    //         //     },
-    //         //     else => {
-    //         //         env_var = "ML_64_PATH";
-    //         //         break :ml_blk "ml64.exe";
-    //         //     },
-    //         // };
-
-    //         // // Find ml executable
-    //         // const ml_exe = ml_blk: {
-    //         //     const ml_env_path = b.graph.env_map.get(env_var);
-    //         //     if (ml_env_path) |env| {
-    //         //         break :ml_blk env;
-    //         //     }
-
-    //         //     break :ml_blk b.findProgram(&.{ml}, &.{}) catch {
-    //         //         std.log.err("failed to find {s} executable. Please provide it in %PATH%, %ML_PATH% or %ML_64_PATH%", .{ml});
-    //         //         return error.MLNotFound;
-    //         //     };
-    //         // };
-
-    //         // const step = b.addSystemCommand(&.{ml_exe});
-    //         // step.addArg("/nologo");
-    //         // step.addArg("/c");
-
-    //         // if (options.target.abi != .msvc) {
-    //         //     step.addArg("/D__MINGW32__");
-    //         // }
-
-    //         // const obj = step.addPrefixedOutputFileArg("/Fo", b.fmt("{s}.obj", .{file_stem}));
-    //         // step.addFileArg(src_file);
-    //         // for (options.flags) |flag| step.addArg(flag);
-    //         // break :blk .{ step, obj };
-    //     },
-    //     else => blk: {
-    //         const step = b.addSystemCommand(&.{"uasm"});
-    //         step.addArg("-nologo");
-    //         step.addArg("-c");
-    //         step.addArg("-win64"); // or "-win32" for 32-bit
-    //         const obj = step.addPrefixedOutputFileArg("-Fo", b.fmt("{s}.obj", .{file_stem}));
-    //         step.addFileArg(src_file);
-    //         for (options.flags) |flag| step.addArg(flag);
-
-    //         break :blk .{ step, obj };
-    //     },
-    // };
-
 }
 
 pub fn addSources(root: std.Build.LazyPath, b: *std.Build, target: std.Build.ResolvedTarget, compile: *std.Build.Step.Compile, comptime definition: CompileDefinition) void {
@@ -832,7 +775,6 @@ const crashpad_wer_module_src = CompileDefinition{
     .general = &.{
         "handler/win/wer/crashpad_wer.cc",
         "handler/win/wer/crashpad_wer_main.cc",
-        // "handler/win/wer/crashpad_wer.def",
     },
     .win = &.{},
     .unix = &.{},
