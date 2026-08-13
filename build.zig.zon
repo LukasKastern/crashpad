@@ -16,25 +16,26 @@
             .url = "git+https://github.com/getsentry/mini_chromium.git#3f2f84dac44888f47f690dfd5bc6ec28b0f37adc",
             .hash = "N-V-__8AAIxeCQAr_hOnd_fNbfybYkbpp7I3jQE5Ln3uICb-",
         },
-        .jwasm = .{
-            .url = "git+https://github.com/LukasKastern/JWasm#6a88b68606d9718a386cbe7003b872dd7145739f",
-            .hash = "N-V-__8AAD0ePgAt4BP-nEduYT78x8_nTSaNgzP8ShVPB7oY",
-        },
         .curl = .{
-            .url = "git+https://github.com/lukaskastern/curl.git?ref=boringssl#bc02ae47be32936da66cabfd8ed6cf1ba1d09f19",
+            .url = "git+https://github.com/allyourcodebase/curl.git#c59c65cd767951abfe9ac0b1e075e64733953361",
             .hash = "curl-8.18.0-mFDAWPf7AACO9V1eofR62eABcrB1QQtT1a-DN5XumC53",
         },
         .patch = .{
-            .url = "git+https://github.com/lukaskastern/patch.git#300478c43fe616a66679e8c71a8dd6009859b973",
-            .hash = "patch-2.6.1-po1jOYlvAAC_clmNabN6gAYkcG5ikj89DZSu0KYC7nHe",
+            .url = "git+https://github.com/akunaakwei/zig-patch#918b45387bb0e8afe629984faf2353fab0efab21",
+            .hash = "patch-2.6.1-po1jOedqAADkiQDv3hXHuQBDzGLVhCfrp38vXHB6xZ1W",
         },
+
         .lss = .{
             .url = "https://chromium.googlesource.com/linux-syscall-support/+archive/9719c1e1e676814c456b55f5f070eabad6709d31.tar.gz",
             .hash = "N-V-__8AAHP7AwBvEXCL17CHmvtbZsfdGPuLxHkEqM9H0UEp",
         },
         .boringssl = .{
-            .url = "git+https://github.com/lukasKastern/boringssl.git#eb7370088c9a2e7f610a2436468dcf6904cd2282",
-            .hash = "boringssl-0.20260508.0-EhtkNTr_AgBIuFqi2C2o_aWHGyBwNTOWNqV6X8l7g4I-",
+            .url = "git+https://github.com/allyourcodebase/boringssl#ec7cca75cbf5381ba4a9e111d1f12236f8f2bd6a",
+            .hash = "boringssl-0.20260526.0-EhtkNaI5AAAUWRtpFwiFhqdvxjAMMWkcx-iHkKIppGBV",
+        },
+        .jwasm = .{
+            .url = "git+https://github.com/LukasKastern/jwasm-zig.git#b67303f62e23800d5154269e221b8eb710ec5868",
+            .hash = "jwasm-2.20.0-wcWFGxIYAAArVRctmowHjbkXDkwNgN0NfgqL7u0Sv5A0",
         },
     },
     .paths = .{
