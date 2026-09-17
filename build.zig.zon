@@ -34,8 +34,8 @@
             .hash = "boringssl-0.20260526.0-EhtkNaI5AAAUWRtpFwiFhqdvxjAMMWkcx-iHkKIppGBV",
         },
         .jwasm = .{
-            .url = "git+https://github.com/LukasKastern/jwasm-zig.git#b67303f62e23800d5154269e221b8eb710ec5868",
-            .hash = "jwasm-2.20.0-wcWFGxIYAAArVRctmowHjbkXDkwNgN0NfgqL7u0Sv5A0",
+            .url = "git+https://github.com/LukasKastern/jwasm-zig.git#fa1c6e447b3b93b17d66bd1d5d12d4f834b866b4",
+            .hash = "jwasm-2.20.0-wcWFG_8XAACrmzimCLdnDZPsppFrN1Z0_qt-NXCmVGvW",
         },
     },
     .paths = .{
