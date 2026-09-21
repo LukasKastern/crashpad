@@ -26,29 +26,30 @@ pub fn build(b: *std.Build) !void {
         .linkage = .static,
     });
 
-    const patch_step = patch.PatchStep.create(b, .{
-        .optimize = .ReleaseSafe,
-        .target = .{
-            .query = .{},
-            .result = builtin.target,
-        },
-        .root_directory = upstream.path(""),
-        .strip = 1,
-    });
-
     const io = b.graph.io;
 
     const build_root = b.build_root.handle;
 
     // Add patches
     const patch_dir = try build_root.openDir(io, "patches", .{ .iterate = true });
+
+    var patches: std.ArrayList(std.Build.LazyPath) = .empty;
     var iterator = patch_dir.iterate();
     while (try iterator.next(io)) |p| {
         const patch_path = try std.fmt.allocPrint(b.allocator, "patches/{s}", .{p.name});
-        patch_step.addPatch(b.path(patch_path));
+        try patches.append(b.allocator, b.path(patch_path));
     }
 
-    const upstream_root = patch_step.getDirectory();
+    // Patch boringssl
+    const patcher = patch.Patcher.init(b, .{
+        .optimize = .ReleaseSafe,
+        .target = b.graph.host,
+        .root_directory = upstream.path(""),
+        .strip = 1,
+        .patches = patches.items,
+    });
+
+    const upstream_root = patcher.output_directory;
 
     // Minichromium base config
     {

@@ -25,8 +25,8 @@
             .hash = "curl-8.18.0-mFDAWCH5AADu_sgXOXIw6_ZDSmqLsybYPS3BkU6gDRZY",
         },
         .patch = .{
-            .url = "git+https://github.com/lukaskastern/patch.git#300478c43fe616a66679e8c71a8dd6009859b973",
-            .hash = "patch-2.6.1-po1jOYlvAAC_clmNabN6gAYkcG5ikj89DZSu0KYC7nHe",
+            .url = "git+https://github.com/akunaakwei/zig-patch#918b45387bb0e8afe629984faf2353fab0efab21",
+            .hash = "patch-2.6.1-po1jOedqAADkiQDv3hXHuQBDzGLVhCfrp38vXHB6xZ1W",
         },
         .lss = .{
             .url = "https://chromium.googlesource.com/linux-syscall-support/+archive/9719c1e1e676814c456b55f5f070eabad6709d31.tar.gz",
