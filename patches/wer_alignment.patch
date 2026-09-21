@@ -1,0 +1,13 @@
+diff --git a/util/win/registration_protocol_win_structs.h b/util/win/registration_protocol_win_structs.h
+index fae74886..ee1bb09c 100644
+--- a/util/win/registration_protocol_win_structs.h
++++ b/util/win/registration_protocol_win_structs.h
+@@ -85,7 +85,7 @@ struct RegistrationRequest {
+ 
+   //! \brief Version field to detect skew between client and server. Should be
+   //!     set to kMessageVersion.
+-  int version;
++  DWORD64 version;
+ 
+   //! \brief The PID of the client process.
+   DWORD client_process_id;
