@@ -1,13 +1,13 @@
 diff --git a/util/win/registration_protocol_win_structs.h b/util/win/registration_protocol_win_structs.h
-index fae74886..ee1bb09c 100644
+index fae74886..c3f9c42d 100644
 --- a/util/win/registration_protocol_win_structs.h
 +++ b/util/win/registration_protocol_win_structs.h
-@@ -85,7 +85,7 @@ struct RegistrationRequest {
- 
-   //! \brief Version field to detect skew between client and server. Should be
-   //!     set to kMessageVersion.
+@@ -44,7 +44,7 @@ struct WerRegistration {
+   enum { kWerRegistrationVersion = 1 };
+   //! \brief Version field to detect skew between target process and helper.
+   //!     Should be set to kWerRegistrationVersion.
 -  int version;
 +  DWORD64 version;
- 
-   //! \brief The PID of the client process.
-   DWORD client_process_id;
+   //! \brief Used by DumpWithoutCrashing and the WER module to initiate a dump.
+   //!     These handles are leaked in the client process.
+   HANDLE dump_without_crashing;
