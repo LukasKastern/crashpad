@@ -28,7 +28,7 @@ pub fn build(b: *std.Build) !void {
 
     const io = b.graph.io;
 
-    const build_root = b.build_root.handle;
+    const build_root = b.root.root_dir.handle;
 
     // Add patches
     const patch_dir = try build_root.openDir(io, "patches", .{ .iterate = true });
@@ -285,7 +285,7 @@ pub fn build(b: *std.Build) !void {
 
         addSources(upstream_root, b, target, crashpad_handler, crashpad_handler_src);
 
-        crashpad_handler.subsystem = .Windows;
+        crashpad_handler.subsystem = .windows;
     }
 
     if (target.result.os.tag == .windows) {
