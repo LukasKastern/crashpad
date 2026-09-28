@@ -16,7 +16,7 @@ pub fn build(b: *std.Build) !void {
     });
 
     const minichromium = b.addLibrary(.{
-        .name = "crashpad_client",
+        .name = "minichromium",
         .root_module = b.createModule(.{
             .target = target,
             .optimize = optimize,
@@ -180,6 +180,8 @@ pub fn build(b: *std.Build) !void {
             const lib_curl = @import("curl").artifact(curl_dependency, .lib);
             crashpad_util_lib.root_module.linkLibrary(lib_curl);
         }
+
+        b.installArtifact(crashpad_util_lib);
     }
 
     const crashpad_client = b.addLibrary(.{
@@ -309,6 +311,7 @@ pub fn build(b: *std.Build) !void {
 
     b.installArtifact(crashpad_client);
     b.installArtifact(crashpad_handler);
+    b.installArtifact(minichromium);
 }
 
 const AddMasmFilesOptions = struct {
