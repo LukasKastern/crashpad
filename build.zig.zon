@@ -29,7 +29,7 @@
             .hash = "patch-2.6.1-po1jOedqAADkiQDv3hXHuQBDzGLVhCfrp38vXHB6xZ1W",
         },
         .lss = .{
-            .url = "https://chromium.googlesource.com/linux-syscall-support/+archive/9719c1e1e676814c456b55f5f070eabad6709d31.tar.gz",
+            .url = "git+https://github.com/LukasKastern/linux-syscall-support#9719c1e1e676814c456b55f5f070eabad6709d31",
             .hash = "N-V-__8AAHP7AwBvEXCL17CHmvtbZsfdGPuLxHkEqM9H0UEp",
         },
     },
