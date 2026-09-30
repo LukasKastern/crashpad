@@ -21,8 +21,8 @@
             .hash = "N-V-__8AAD0ePgAt4BP-nEduYT78x8_nTSaNgzP8ShVPB7oY",
         },
         .curl = .{
-            .url = "git+https://github.com/lukaskastern/curl.git#b07029e3c8b22d45ccb8826fe2dedb7cc661c172",
-            .hash = "curl-8.18.0-mFDAWL_7AAApztyr9EkfMZOTuS_lKBlLm9e7ROGGtS-5",
+            .url = "git+https://github.com/lukaskastern/curl.git#f9945b248afb95ac77f86300f7358fde115198d2",
+            .hash = "curl-8.22.0-mFDAWHX7AACZrrg8Ug68sos2OuE27N38kuabzm9lxQOi",
         },
         .patch = .{
             .url = "git+https://github.com/akunaakwei/zig-patch#918b45387bb0e8afe629984faf2353fab0efab21",
